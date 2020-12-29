@@ -1,0 +1,98 @@
+﻿@model IEnumerable<RealViewServer.Model.Project>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Admin | Projects</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+</head>
+<body style="margin-bottom: 40px">
+<div class="container">
+    <div class="row" style="margin-top: 20px">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="/">Home</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    Projects
+                </li>
+            </ol>
+        </nav>
+    </div>
+    <div class="row">
+        <table class="table table-bordered table-hover" style="font-size: 14px">
+            <thead class="thead-dark">
+            <tr>
+                <th class="text-center" scope="col">#</th>
+                <th class="text-center" scope="col">Name</th>
+                <th class="text-center" scope="col">Origin latitude</th>
+                <th class="text-center" scope="col">Origin longitude</th>
+                <th class="text-center" scope="col">Origin altitude (m)</th>
+                <th class="text-center" scope="col">Photos</th>
+            </tr>
+            </thead>
+            <tbody>
+            @{
+                var i = 1;
+                foreach (var project in Model)
+                {
+                    <tr>
+                        <th class="text-center" scope="row">@i</th>
+                        <td class="text-center">@project.Name</td>
+                        <td class="text-center">@project.OriginLatitude.ToString("0.#####")</td>
+                        <td class="text-center">@project.OriginLongitude.ToString("0.#####")</td>
+                        <td class="text-center">@project.OriginAltitude.ToString("0.##")</td>
+                        <td class="text-center">
+                            <a href="/admin/projects/@project.Name/photos">
+                                @project.Photos.Count
+                            </a>
+                        </td>
+                    </tr>
+                    i++;
+                }
+            }
+            </tbody>
+        </table>
+    </div>
+    <div class="row justify-content-center" style="margin-top: 20px">
+        <div class="card" style="width: 300px">
+            <h5 class="card-header text-center">
+                New project
+            </h5>
+            <div class="card-body">
+                <div class="form-group">
+                    <form action="/admin/projects" method="POST">
+                        <div>
+                            <label class="card-text" for="name">Project name:</label>
+                            <input name="name" id="name" placeholder="New project" class="form-control">
+                        </div>
+                        <div style="margin-top: 10px">
+                            <label class="card-text" for="latitude">Latitude:</label>
+                            <input name="latitude" id="latitude" placeholder="59,95201" class="form-control">
+                        </div>
+                        <div style="margin-top: 10px">
+                            <label class="card-text" for="longitude">Longitude:</label>
+                            <input name="longitude" id="longitude" placeholder="30,26225" class="form-control">
+                        </div>
+                        <div style="margin-top: 10px">
+                            <label class="card-text" for="altitude">Altitude:</label>
+                            <input name="altitude" id="altitude" placeholder="24,079" class="form-control">
+                        </div>
+                        <div style="margin-top: 20px" align="center">
+                            <button class="btn btn-primary">Add project</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

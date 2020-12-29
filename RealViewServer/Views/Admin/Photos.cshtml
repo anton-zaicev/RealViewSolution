@@ -1,0 +1,104 @@
+﻿@model RealViewServer.Model.Project
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Admin | @Model.Name | Photos</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+</head>
+<body style="margin-bottom: 40px">
+<div class="container">
+    <div class="row" style="margin-top: 20px">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="/">Home</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="/admin/projects">Projects</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    @Model.Name Photos
+                </li>
+            </ol>
+        </nav>
+    </div>
+    <div class="row">
+        <table class="table table-bordered table-hover table-sm" style="font-size: 12px">
+            <thead class="thead-dark">
+            <tr>
+                <th class="text-center" scope="col">#</th>
+                <th class="text-center" scope="col">Image</th>
+                <th class="text-center" scope="col">Resolution (px)</th>
+                <th class="text-center" scope="col">Size (b)</th>
+                <th class="text-center" scope="col">Created</th>
+                <th class="text-center" scope="col">Latitude</th>
+                <th class="text-center" scope="col">Longitude</th>
+                <th class="text-center" scope="col">Altitude (m)</th>
+                <th class="text-center" scope="col">Direction (°)</th>
+                <th class="text-center" scope="col">Pitch (°)</th>
+                <th class="text-center" scope="col">Distance (m)</th>
+                <th class="text-center" scope="col">LocalX (m)</th>
+                <th class="text-center" scope="col">LocalY (m)</th>
+                <th class="text-center" scope="col">LocalZ (m)</th>
+            </tr>
+            </thead>
+            <tbody>
+            @{
+                var i = 1;
+                foreach (var photo in Model.Photos)
+                {
+                    <tr>
+                        <th class="text-center" scope="row">@i</th>
+                        <td class="text-center">
+                            <img style="max-width: 150px; max-height: 150px" src="@photo.Uri" title="@photo.FileName" alt="@photo.FileName"/>
+                        </td>
+                        <td class="text-center">@photo.ImageResolution</td>
+                        <td class="text-center">@photo.FileSize</td>
+                        <td class="text-center">@photo.Created</td>
+                        <td class="text-center">@photo.Latitude.ToString("0.#####")</td>
+                        <td class="text-center">@photo.Longitude.ToString("0.#####")</td>
+                        <td class="text-center">@photo.Altitude.ToString("0.##")</td>
+                        <td class="text-center">@photo.Direction.ToString("0")</td>
+                        <td class="text-center">@photo.Pitch.ToString("0")</td>
+                        <td class="text-center">@photo.DistanceToOrigin.ToString("0.##")</td>
+                        <td class="text-center">@photo.LocalX.ToString("0.##")</td>
+                        <td class="text-center">@photo.LocalY.ToString("0.##")</td>
+                        <td class="text-center">@photo.LocalZ.ToString("0.##")</td>
+                    </tr>
+                    i++;
+                }
+            }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row justify-content-center" style="margin-top: 20px">
+        <div class="card" style="width: 500px">
+            <h5 class="card-header text-center">
+                Upload Photos
+            </h5>
+            <div class="card-body">
+                @using (Html.BeginForm("Photos", "Admin", FormMethod.Post,
+                    new {enctype = "multipart/form-data"}))
+                {
+                    @Html.Hidden("projectName", Model.Name)
+                    <div>
+                        <input type="file" multiple name="files" id="files" accept="image/jpeg"/>
+                        <div align="center" style="margin-top: 20px">
+                            <input type="submit" value="Upload" class="btn btn-primary"/>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
